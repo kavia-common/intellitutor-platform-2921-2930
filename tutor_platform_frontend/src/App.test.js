@@ -1,8 +1,16 @@
 import { render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
+import { ThemeProvider } from './theme/ThemeProvider';
 import App from './App';
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+test('renders header brand', () => {
+  render(
+    <ThemeProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </ThemeProvider>
+  );
+  const brand = screen.getByText(/Tutor Platform/i);
+  expect(brand).toBeInTheDocument();
 });

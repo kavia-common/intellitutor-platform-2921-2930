@@ -1,47 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
+import React from 'react';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import './App.css';
+import './theme/theme.css';
+import Header from './components/layout/Header';
+import Sidebar from './components/layout/Sidebar';
+import MainPanel from './components/layout/MainPanel';
+import ChatPage from './pages/ChatPage';
+import ContentPage from './pages/ContentPage';
 
 // PUBLIC_INTERFACE
 function App() {
-  const [theme, setTheme] = useState('light');
-
-  // Effect to apply theme to document element
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
-
-  // PUBLIC_INTERFACE
-  const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
-  };
+  /** Root application shell with Ocean Professional theme and two-pane layout. */
+  const location = useLocation();
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <button 
-          className="theme-toggle" 
-          onClick={toggleTheme}
-          aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-        >
-          {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
-        </button>
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <p>
-          Current theme: <strong>{theme}</strong>
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app-shell">
+      <Header />
+      <div className="app-body">
+        <Sidebar />
+        <MainPanel>
+          <Routes location={location}>
+            <Route path="/" element={<Navigate to="/chat" replace />} />
+            <Route path="/chat" element={<ChatPage />} />
+            <Route path="/content" element={<ContentPage />} />
+            <Route path="*" element={<Navigate to="/chat" replace />} />
+          </Routes>
+        </MainPanel>
+      </div>
     </div>
   );
 }

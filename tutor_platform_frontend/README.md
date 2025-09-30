@@ -1,82 +1,112 @@
-# Lightweight React Template for KAVIA
+# Tutor Platform Frontend (React)
 
-This project provides a minimal React template with a clean, modern UI and minimal dependencies.
+Modern, lightweight React frontend for an educational multi-agent tutor platform.
 
-## Features
+Features
+- Ocean Professional theme (blue & amber accents, rounded corners, subtle gradients)
+- Sidebar with agent selection and chat list
+- Main panel for real-time chat and educational content browsing
+- Header with profile menu and theme toggle (light/dark)
+- Modular services layer with mock mode for backend REST calls
+- Scalable, readable component structure
+- Accessibility-minded components and keyboard navigation
 
-- **Lightweight**: No heavy UI frameworks - uses only vanilla CSS and React
-- **Modern UI**: Clean, responsive design with KAVIA brand styling
-- **Fast**: Minimal dependencies for quick loading times
-- **Simple**: Easy to understand and modify
+Getting Started
+1. Install dependencies
+   npm install
 
-## Getting Started
+2. Create environment config
+   - Copy .env.example to .env and set variables
 
-In the project directory, you can run:
+3. Start development server
+   npm start
 
-### `npm start`
+Environment Variables
+- REACT_APP_API_BASE_URL: Base URL for chatbot_backend (e.g. http://localhost:8000)
+- REACT_APP_USE_MOCK_API: "true" to use mocked API responses (default true)
 
-Runs the app in development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Project Structure
+src/
+  index.js, index.css
+  App.js, App.css
+  theme/
+    theme.css               - CSS variables for Ocean Professional
+    ThemeProvider.js        - Theme context and toggle
+  components/
+    layout/
+      Header.js
+      Sidebar.js
+      MainPanel.js
+    chat/
+      ChatWindow.js
+      MessageBubble.js
+      ChatInput.js
+      AgentSelector.js
+      ChatList.js
+    content/
+      ContentBrowser.js
+      ContentCard.js
+    common/
+      Button.js
+      Avatar.js
+      Spinner.js
+      Toggle.js
+      EmptyState.js
+  pages/
+    ChatPage.js
+    ContentPage.js
+  services/
+    apiClient.js
+    chatService.js
+    agentsService.js
+    contentService.js
+    mock/
+      mockData.js
+      mockApi.js
+  utils/
+    formatters.js
+    storage.js
+  config/
+    constants.js
+    openapi-notes.md
+  hooks/
+    useChats.js
+    useAgents.js
+    useContent.js
 
-### `npm test`
+Mock API
+When REACT_APP_USE_MOCK_API=true, the app uses mock services that return predictable data without needing a backend. This enables immediate local development.
 
-Launches the test runner in interactive watch mode.
+Styling
+- Theme variables defined in src/theme/theme.css
+- Ocean Professional palette
+  - primary: #2563EB (blue)
+  - secondary: #F59E0B (amber)
+  - error: #EF4444
+  - background: #f9fafb
+  - surface: #ffffff
+  - text: #111827
+- Subtle shadows, rounded corners, transitions
 
-### `npm run build`
+Accessibility
+- Keyboard navigable components
+- ARIA labels for interactive elements
+- Color contrasts tuned for readability
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Connect to Backend
+- Ensure REACT_APP_API_BASE_URL points to chatbot_backend
+- API service methods:
+  - chatService:
+    - listChats()
+    - getChat(chatId)
+    - sendMessage({chatId, message, agentId})
+    - createChat({title, agentId})
+  - agentsService:
+    - listAgents()
+    - getAgent(agentId)
+  - contentService:
+    - listContent({query, tags})
+    - getContent(contentId)
 
-## Customization
-
-### Colors
-
-The main brand colors are defined as CSS variables in `src/App.css`:
-
-```css
-:root {
-  --kavia-orange: #E87A41;
-  --kavia-dark: #1A1A1A;
-  --text-color: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --border-color: rgba(255, 255, 255, 0.1);
-}
-```
-
-### Components
-
-This template uses pure HTML/CSS components instead of a UI framework. You can find component styles in `src/App.css`. 
-
-Common components include:
-- Buttons (`.btn`, `.btn-large`)
-- Container (`.container`)
-- Navigation (`.navbar`)
-- Typography (`.title`, `.subtitle`, `.description`)
-
-## Learn More
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+License
+MIT
