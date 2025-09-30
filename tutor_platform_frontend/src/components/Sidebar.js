@@ -6,8 +6,10 @@ const AgentItem = ({ agent, active, onSelect }) => {
       className={`agent-item ${active ? "active" : ""}`}
       onClick={() => onSelect(agent)}
       title={agent.description}
+      aria-pressed={active}
+      aria-label={`Select agent ${agent.name}`}
     >
-      <span className="emoji">{agent.emoji}</span>
+      <span className="emoji" aria-hidden="true">{agent.emoji}</span>
       <div className="meta">
         <span className="name">{agent.name}</span>
         <span className="desc">{agent.short}</span>
@@ -18,7 +20,12 @@ const AgentItem = ({ agent, active, onSelect }) => {
 
 const ChatListItem = ({ chat, active, onOpen }) => {
   return (
-    <button className={`chat-item ${active ? "active" : ""}`} onClick={() => onOpen(chat)}>
+    <button
+      className={`chat-item ${active ? "active" : ""}`}
+      onClick={() => onOpen(chat)}
+      aria-current={active ? "true" : undefined}
+      aria-label={`Open chat ${chat.title}`}
+    >
       <div className="chat-title">{chat.title}</div>
       <div className="chat-sub">{chat.subtitle}</div>
     </button>
@@ -37,12 +44,12 @@ export default function Sidebar({
 }) {
   /** Sidebar showing selectable agents and recent chats. */
   return (
-    <aside className="it-sidebar">
+    <aside className="it-sidebar" aria-label="Sidebar">
       <div className="sidebar-section">
         <div className="section-header">
           <span className="section-title">Agents</span>
         </div>
-        <div className="agents">
+        <div className="agents" role="list">
           {agents.map((a) => (
             <AgentItem
               key={a.name}
@@ -56,9 +63,9 @@ export default function Sidebar({
       <div className="sidebar-section">
         <div className="section-header with-action">
           <span className="section-title">Recent Chats</span>
-          <button className="btn-amber" onClick={onNewChat}>+ New</button>
+          <button className="btn-amber" onClick={onNewChat} aria-label="Create new chat">+ New</button>
         </div>
-        <div className="chat-list">
+        <div className="chat-list" role="list">
           {chats.length === 0 && (
             <div className="empty">No recent chats. Start a new conversation.</div>
           )}

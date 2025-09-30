@@ -25,7 +25,7 @@ function App() {
   ]);
   const [activeAgent, setActiveAgent] = useState(agents[0]);
 
-  // Recent chats placeholder
+  // Recent chats
   const [chats, setChats] = useState([]);
   const [activeChatId, setActiveChatId] = useState(null);
 
@@ -51,7 +51,7 @@ function App() {
 
   // PUBLIC_INTERFACE
   const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
+    setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
   };
 
   // PUBLIC_INTERFACE
@@ -102,11 +102,11 @@ function App() {
     <div className="it-app">
       <Header theme={theme} onToggleTheme={toggleTheme} user={user} />
       {!backendHealthy && (
-        <div className="banner-warning">
+        <div role="status" aria-live="polite" className="banner-warning">
           Backend is unreachable. You can explore the UI in offline mode; chat features may be limited.
         </div>
       )}
-      <div className="it-main">
+      <div className="it-main" role="main">
         <Sidebar
           agents={agents}
           activeAgent={activeAgent}
@@ -116,7 +116,7 @@ function App() {
           onOpenChat={openChat}
           onNewChat={startNewChat}
         />
-        <main className="it-content">
+        <main className="it-content" aria-label="Chat and content panel">
           <ChatPanel
             sessionId={sessionId}
             activeAgent={activeAgent}

@@ -4,9 +4,9 @@ import React from "react";
 export default function Header({ theme, onToggleTheme, user }) {
   /** Top navigation header with brand, search placeholder, theme toggle, and user avatar. */
   return (
-    <header className="it-header">
-      <div className="brand">
-        <div className="logo">🎓</div>
+    <header className="it-header" role="banner">
+      <div className="brand" aria-label="Brand">
+        <div className="logo" aria-hidden="true">🎓</div>
         <div className="brand-text">
           <span className="title">IntelliTutor</span>
           <span className="subtitle">Ocean Professional</span>
@@ -31,7 +31,7 @@ export default function Header({ theme, onToggleTheme, user }) {
         >
           {theme === "light" ? "🌙" : "☀️"}
         </button>
-        <div className="avatar" title={user?.name || "You"}>
+        <div className="avatar" title={user?.name || "You"} aria-label={`User ${user?.name || 'You'}`}>
           {user?.initials || "YU"}
         </div>
       </div>

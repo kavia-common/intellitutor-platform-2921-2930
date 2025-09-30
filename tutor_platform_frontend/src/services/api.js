@@ -1,6 +1,8 @@
 //
+//
 // API service for interacting with chatbot_backend
 // Uses environment variable REACT_APP_BACKEND_BASE_URL for base URL
+// If not set, defaults to http://localhost:3001 (as configured in package.json proxy or example env).
 //
 
 const BASE_URL = process.env.REACT_APP_BACKEND_BASE_URL || "http://localhost:3001";

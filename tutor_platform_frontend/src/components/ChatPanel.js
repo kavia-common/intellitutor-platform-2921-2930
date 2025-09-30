@@ -5,7 +5,7 @@ const MessageBubble = ({ msg }) => {
   const isUser = msg.sender === "user";
   return (
     <div className={`msg-row ${isUser ? "right" : "left"}`}>
-      <div className={`msg ${isUser ? "user" : "assistant"}`}>
+      <div className={`msg ${isUser ? "user" : "assistant"}`} role="article" aria-label={`${isUser ? 'User' : 'Assistant'} message`}>
         {!isUser && <div className="agent-tag">{msg.sender}</div>}
         <div className="content">{msg.content}</div>
         {msg.sources && msg.sources.length > 0 && (
@@ -28,7 +28,7 @@ const MessageBubble = ({ msg }) => {
 const RetrievalPanel = ({ docs, loading, onQuery }) => {
   const [q, setQ] = useState("");
   return (
-    <div className="retrieval-panel">
+    <div className="retrieval-panel" aria-label="Knowledge base panel">
       <div className="panel-header">
         <span className="panel-title">Knowledge Base</span>
         <span className="panel-sub">RAG results</span>
@@ -42,8 +42,9 @@ const RetrievalPanel = ({ docs, loading, onQuery }) => {
           onKeyDown={(e) => {
             if (e.key === "Enter") onQuery(q);
           }}
+          aria-label="Knowledge base search input"
         />
-        <button className="btn" onClick={() => onQuery(q)} disabled={loading || !q.trim()}>
+        <button className="btn" onClick={() => onQuery(q)} disabled={loading || !q.trim()} aria-busy={loading}>
           {loading ? "Searching..." : "Search"}
         </button>
       </div>
@@ -117,8 +118,19 @@ export default function ChatPanel({
         ...(res?.message || {}),
         sources: res?.sources || [],
       };
-      setMessages((prev) => [...prev, assistantMsg]);
-      onSendMessage?.(assistantMsg);
+      // Fallback if backend returns nothing
+      const safeAssistant = assistantMsg.id
+        ? assistantMsg
+        : {
+            id: `a-${Date.now()}`,
+            session_id: sessionId,
+            sender: activeAgent?.name || "assistant",
+            content: "Thanks for your question. I’m currently offline — please try again shortly.",
+            timestamp: new Date().toISOString(),
+            sources: [],
+          };
+      setMessages((prev) => [...prev, safeAssistant]);
+      onSendMessage?.(safeAssistant);
     } catch (e) {
       const errMsg = {
         id: `e-${Date.now()}`,
@@ -148,14 +160,14 @@ export default function ChatPanel({
   }
 
   return (
-    <div className="it-chat">
+    <div className="it-chat" aria-live="polite">
       <div className="chat-header">
         <div className="chat-title">
           <span className="gradient">Tutor Chat</span>
           {activeAgent && <span className="agent-pill">{activeAgent.emoji} {activeAgent.name}</span>}
         </div>
         <div className="chat-controls">
-          <label className="toggle">
+          <label className="toggle" aria-label="Toggle use of retrieval augmented generation">
             <input type="checkbox" checked={rag} onChange={(e) => setRag(e.target.checked)} />
             <span className="toggle-label">Use RAG</span>
           </label>
@@ -163,7 +175,7 @@ export default function ChatPanel({
       </div>
 
       <div className="chat-body">
-        <div className="messages" ref={listRef}>
+        <div className="messages" ref={listRef} role="log" aria-live="polite">
           {placeholderNote && <div className="placeholder">{placeholderNote}</div>}
           {messages.map((m) => (
             <MessageBubble key={m.id} msg={m} />
@@ -188,6 +200,7 @@ export default function ChatPanel({
             }
           }}
           disabled={!sessionId}
+          aria-label="Message input"
         />
         <button className="btn" onClick={handleSend} disabled={loading || !sessionId || !input.trim()}>
           Send

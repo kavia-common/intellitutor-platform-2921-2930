@@ -392,6 +392,12 @@ body {
   padding: 12px;
   background: linear-gradient(180deg, var(--surface), rgba(37, 99, 235, 0.02));
 }
+.placeholder {
+  color: var(--muted);
+  font-size: 14px;
+  text-align: center;
+  padding: 8px;
+}
 
 .msg-row {
   display: flex;
